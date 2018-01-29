@@ -5,14 +5,9 @@
  */
 package checkerboard;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 /**
  *
@@ -32,6 +27,9 @@ public class CheckerBoard {
     
     private AnchorPane root;
     
+    private double rectangleWidth;
+    private double rectangleHeight;
+    
     public CheckerBoard(int numRows, int numCols, double boardWidth, double boardHeight) {
         this.numRows = numRows;
         this.numCols = numCols;
@@ -49,18 +47,20 @@ public class CheckerBoard {
 
         AnchorPane anchorPane = new AnchorPane();
         
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        setDimensions();
+                        
+        for (int row = 0; row < getNumRows(); row++) {
+            for (int col = 0; col < getNumCols(); col++) {
                 Color color;
                 if(row % 2 == 0) {
-                    color = (col % 2 == 0 ? Color.RED : Color.BLACK);
+                    color = (col % 2 == 0 ? getLightColor(): getDarkColor());
                 } else {
-                    color = (col % 2 == 0 ? Color.BLACK : Color.RED);
+                    color = (col % 2 == 0 ? getDarkColor() : getLightColor());
                 }
                 
                 Rectangle rect = new Rectangle(getRectangleWidth(), getRectangleHeight(), color);
-                anchorPane.setTopAnchor(rect,row * getRectangleHeight());
-                anchorPane.setLeftAnchor(rect,col * getRectangleWidth());
+                anchorPane.setTopAnchor(rect,row * getRectangleWidth());
+                anchorPane.setLeftAnchor(rect,col * getRectangleHeight());
                 anchorPane.getChildren().add(rect);
             }
         }
@@ -68,6 +68,16 @@ public class CheckerBoard {
         root = anchorPane;
         
         return anchorPane;
+    }
+    
+    public void setDimensions() {
+        if(getHeight() >= getWidth()) {
+            rectangleWidth = getWidth() / ((double) getNumRows());
+            rectangleHeight = getWidth() / ((double) getNumCols());
+        } else {
+            rectangleWidth = getHeight() / ((double) getNumRows());
+            rectangleHeight = getHeight() / ((double) getNumCols());
+        }
     }
     
     public AnchorPane getRoot() {
@@ -91,11 +101,11 @@ public class CheckerBoard {
     }
     
     public double getRectangleWidth() {
-        return getWidth() / numCols;
+        return rectangleWidth;
     }
     
     public double getRectangleHeight() {
-        return getHeight() / numRows;
+        return rectangleHeight;
     }
     
     public double getWidth(){

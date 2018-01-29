@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -32,6 +33,24 @@ public class CheckerBoardFXMLController implements Initializable {
     
     @FXML
     private VBox vBox;
+    
+    @FXML
+    private MenuItem sixteen;
+    
+    @FXML
+    private MenuItem ten;
+    
+    @FXML
+    private MenuItem eight;
+    
+    @FXML
+    private MenuItem three;
+    
+    @FXML
+    private MenuItem defaultColor;
+    
+    @FXML
+    private MenuItem blueColor;
     
     private double checkerBoardHeight;
     private double checkerBoardWidth;
@@ -58,14 +77,38 @@ public class CheckerBoardFXMLController implements Initializable {
     
     @FXML
     private void handleBoardSize(ActionEvent event) {
-        numCols = 8;
-        numRows = 8;
-        System.out.println("FIRED");
+        MenuItem selected = ((MenuItem) event.getSource());
+        switch(selected.getId()) {
+            case "sixteen":
+                resize(16,16);
+                break;
+            case "ten":
+                resize(10,10);
+                break;
+            case "eight":
+                resize(8,8);
+                break;
+            case "three":
+                resize(3,3);
+                break;
+        }
+        
+        refresh();
     }
     
     @FXML
     private void handleBoardColor(ActionEvent event) {
-        //TODO
+        MenuItem selected = ((MenuItem) event.getSource());
+        switch(selected.getId()) {
+            case "defaultColor":
+                recolor(Color.RED, Color.BLACK);
+                break;
+            case "blueColor":
+                recolor(Color.SKYBLUE, Color.DARKBLUE);
+                break;
+        }
+        
+        refresh();
     }
     
     public void initialize(Stage stage) {   
@@ -96,4 +139,13 @@ public class CheckerBoardFXMLController implements Initializable {
         anchorPane.getChildren().clear();
     }
     
+    public void resize(int rows, int cols) {
+        numCols = cols;
+        numRows = rows;
+    }
+    
+    public void recolor(Color lightColor, Color darkColor) {
+        this.lightColor = lightColor;
+        this.darkColor = darkColor;
+    }
 }

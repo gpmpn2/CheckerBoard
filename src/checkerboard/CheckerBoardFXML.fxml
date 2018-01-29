@@ -10,18 +10,18 @@
    <children>
       <MenuBar fx:id="menuBar">
         <menus>
-          <Menu mnemonicParsing="false" onAction="#handleBoardSize" text="Grid">
+          <Menu mnemonicParsing="false" text="Grid">
             <items>
-              <MenuItem mnemonicParsing="false" text="16 x 16" />
-                  <MenuItem mnemonicParsing="false" text="10 x 10" />
-                  <MenuItem mnemonicParsing="false" text="8 x 8" />
-                  <MenuItem mnemonicParsing="false" text="3 x 3" />
+              <MenuItem fx:id="sixteen" mnemonicParsing="false" onAction="#handleBoardSize" text="16 x 16" />
+                  <MenuItem fx:id="ten" mnemonicParsing="false" onAction="#handleBoardSize" text="10 x 10" />
+                  <MenuItem fx:id="eight" mnemonicParsing="false" onAction="#handleBoardSize" text="8 x 8" />
+                  <MenuItem fx:id="three" mnemonicParsing="false" onAction="#handleBoardSize" text="3 x 3" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Colors">
             <items>
-              <MenuItem mnemonicParsing="false" text="Default" />
-                  <MenuItem mnemonicParsing="false" text="Blue" />
+              <MenuItem fx:id="defaultColor" mnemonicParsing="false" onAction="#handleBoardColor" text="Default" />
+                  <MenuItem fx:id="blueColor" mnemonicParsing="false" onAction="#handleBoardColor" text="Blue" />
             </items>
           </Menu>
         </menus>
