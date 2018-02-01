@@ -13,11 +13,9 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author grant
+ * @author Grant
  */
 public class CheckerBoardRunner extends Application {
-    
-    public static final int MENU_BAR_HEIGHT = 24;
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -25,15 +23,21 @@ public class CheckerBoardRunner extends Application {
         
         Parent root = (Parent) loader.load();
         
+        //Grabs our controller to use here
         CheckerBoardFXMLController controller = (CheckerBoardFXMLController) loader.getController();
-        
+     
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
         stage.setTitle("CheckerBoard");
+        
+        //This is what I found on google, it kind of works, but it still wont let me force the stage size to start in a square shape...
+        //stage.minWidthProperty().bind(scene.heightProperty().multiply(2));
+        //stage.minHeightProperty().bind(scene.widthProperty().divide(2));
+        
         stage.show();
         
-        controller.initialize(stage);
+        controller.load(stage);
     }
 
     /**

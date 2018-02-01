@@ -65,9 +65,13 @@ public class CheckerBoardFXMLController implements Initializable {
     private static final int DEFAULT_NUM_COLS = 8;
     private static final Color DEFAULT_COLOR_LIGHT = Color.RED;
     private static final Color DEFAULT_COLOR_DARK = Color.BLACK;
+    private static final int STAGE_OFFSET = 14;
+    
+    private Stage stage;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Sets our default values for when the board initially loads
         numCols = DEFAULT_NUM_ROWS;
         numRows = DEFAULT_NUM_COLS;
         
@@ -77,7 +81,10 @@ public class CheckerBoardFXMLController implements Initializable {
     
     @FXML
     private void handleBoardSize(ActionEvent event) {
+        //Gets the option the user clicked
         MenuItem selected = ((MenuItem) event.getSource());
+        
+        //Switch statement to see what size to set
         switch(selected.getId()) {
             case "sixteen":
                 resize(16,16);
@@ -98,7 +105,10 @@ public class CheckerBoardFXMLController implements Initializable {
     
     @FXML
     private void handleBoardColor(ActionEvent event) {
+        //Gets the option the user clicked
         MenuItem selected = ((MenuItem) event.getSource());
+        
+        //Switch to see what color to set the board to
         switch(selected.getId()) {
             case "defaultColor":
                 recolor(Color.RED, Color.BLACK);
@@ -111,39 +121,69 @@ public class CheckerBoardFXMLController implements Initializable {
         refresh();
     }
     
-    public void initialize(Stage stage) {   
+    public void load(Stage stage) {  
+        this.stage = stage;
         ChangeListener<Number> lambdaChangeListener = (ObservableValue<? extends Number> observable, Number oldValue, final Number newValue) -> {
             refresh();
         };
         
+        //Add's width and height listeners to tell the board when to refresh
         stage.widthProperty().addListener(lambdaChangeListener);
         stage.heightProperty().addListener(lambdaChangeListener);
-
+    
+        //Need a one time refresh right after loading
         refresh();
+        
+        //Sets the stage to a square size
+        stage.setWidth(anchorPane.getMinWidth() + STAGE_OFFSET);
     }
     
+    /**
+     * Refreshes our checkerboard
+     */
     public void refresh() {
+        //Get the height of the vbox - the height of the menu bar so we can calculate the square size
         checkerBoardHeight = vBox.getHeight() - menuBar.getHeight();
+        
+        //Just the width of the vBox
         checkerBoardWidth = vBox.getWidth();
         
         CheckerBoard cb = new CheckerBoard(numCols, numRows, checkerBoardWidth, checkerBoardHeight, lightColor, darkColor);
         AnchorPane updatedAnchorPane = cb.build();
         
+        //Set our new anchor pane
+        anchorPane = updatedAnchorPane;
+        
+        //Clear our vbox
         clear();
-        
-        anchorPane.getChildren().add(updatedAnchorPane);
-        
+
+        //Add back our menuBar and add our new anchorpane
+        vBox.getChildren().add(menuBar);
+        vBox.getChildren().add(anchorPane);
     }
     
+    /**
+     * Clears the VBox
+     */
     public void clear() {
-        anchorPane.getChildren().clear();
+        vBox.getChildren().clear();
     }
     
+    /**
+     * Resizes the rows and columns when called
+     * @param rows
+     * @param cols 
+     */
     public void resize(int rows, int cols) {
         numCols = cols;
         numRows = rows;
     }
     
+    /**
+     * Set the light and dark colors
+     * @param lightColor
+     * @param darkColor 
+     */
     public void recolor(Color lightColor, Color darkColor) {
         this.lightColor = lightColor;
         this.darkColor = darkColor;

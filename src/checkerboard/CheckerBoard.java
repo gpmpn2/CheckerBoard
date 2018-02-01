@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class CheckerBoard {
     
+    //Variables
     private int numRows;
     private int numCols;
     private double boardWidth;
@@ -43,14 +44,21 @@ public class CheckerBoard {
         this.darkColor = darkColor;
     }
     
+    /**
+     * Builds a new AnchorPane and returns it to be updated in the GUI
+     * @return 
+     */
     public AnchorPane build() {
 
         AnchorPane anchorPane = new AnchorPane();
         
+        //Sets the square sizes (forces them to be squares)
         setDimensions();
-                        
+        
         for (int row = 0; row < getNumRows(); row++) {
             for (int col = 0; col < getNumCols(); col++) {
+                
+                //Sets the color of the square based on row/column currently being drawn
                 Color color;
                 if(row % 2 == 0) {
                     color = (col % 2 == 0 ? getLightColor(): getDarkColor());
@@ -59,17 +67,25 @@ public class CheckerBoard {
                 }
                 
                 Rectangle rect = new Rectangle(getRectangleWidth(), getRectangleHeight(), color);
+                //Uses anchors to determine the placement of the rectangle (square)
                 anchorPane.setTopAnchor(rect,row * getRectangleWidth());
                 anchorPane.setLeftAnchor(rect,col * getRectangleHeight());
                 anchorPane.getChildren().add(rect);
             }
         }
         
+        //Sets the minimum width so we can load the stage in a correct size on initialization
+        anchorPane.setMinWidth(getNumRows() * getRectangleWidth());
+        
+        //Update our root variable
         root = anchorPane;
         
         return anchorPane;
     }
     
+    /**
+     * Sets the dimensions of the rectangles
+     */
     public void setDimensions() {
         if(getHeight() >= getWidth()) {
             rectangleWidth = getWidth() / ((double) getNumRows());
@@ -80,6 +96,7 @@ public class CheckerBoard {
         }
     }
     
+    //All of our getter's below here
     public AnchorPane getRoot() {
         return root;
     }
