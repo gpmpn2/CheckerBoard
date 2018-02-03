@@ -134,8 +134,10 @@ public class CheckerBoardFXMLController implements Initializable {
         //Need a one time refresh right after loading
         refresh();
         
-        //Sets the stage to a square size
-        stage.setWidth(anchorPane.getMinWidth() + STAGE_OFFSET);
+        //Sets the stage to a square size (if we are running a forced square stage)
+        if(anchorPane.getMinWidth() > 100)
+            stage.setWidth(anchorPane.getMinWidth() + STAGE_OFFSET);
+       
     }
     
     /**
@@ -149,7 +151,7 @@ public class CheckerBoardFXMLController implements Initializable {
         checkerBoardWidth = vBox.getWidth();
         
         CheckerBoard cb = new CheckerBoard(numCols, numRows, checkerBoardWidth, checkerBoardHeight, lightColor, darkColor);
-        AnchorPane updatedAnchorPane = cb.build();
+        AnchorPane updatedAnchorPane = cb.build(false);//Set to false to force square
         
         //Set our new anchor pane
         anchorPane = updatedAnchorPane;

@@ -46,14 +46,15 @@ public class CheckerBoard {
     
     /**
      * Builds a new AnchorPane and returns it to be updated in the GUI
+     * @param forceSquare - tells the method to build an AnchorPane with forced equals square sizes or just fill it with rectangles
      * @return 
      */
-    public AnchorPane build() {
+    public AnchorPane build(boolean forceSquare) {
 
         AnchorPane anchorPane = new AnchorPane();
         
         //Sets the square sizes (forces them to be squares)
-        setDimensions();
+        setDimensions(forceSquare);
         
         for (int row = 0; row < getNumRows(); row++) {
             for (int col = 0; col < getNumCols(); col++) {
@@ -68,14 +69,22 @@ public class CheckerBoard {
                 
                 Rectangle rect = new Rectangle(getRectangleWidth(), getRectangleHeight(), color);
                 //Uses anchors to determine the placement of the rectangle (square)
-                anchorPane.setTopAnchor(rect,row * getRectangleWidth());
-                anchorPane.setLeftAnchor(rect,col * getRectangleHeight());
+                
+                if(!forceSquare) {
+                    rect.setX(row * getRectangleWidth());
+                    rect.setY(col * getRectangleHeight());
+                } else {
+                    anchorPane.setTopAnchor(rect,row * getRectangleWidth());
+                    anchorPane.setLeftAnchor(rect,col * getRectangleHeight());
+                }
+                
                 anchorPane.getChildren().add(rect);
             }
         }
         
-        //Sets the minimum width so we can load the stage in a correct size on initialization
-        anchorPane.setMinWidth(getNumRows() * getRectangleWidth());
+        //Sets the minimum width so we can load the stage in a correct size on initialization (only if were forcing squares to be drawn)
+        if(forceSquare)
+            anchorPane.setMinWidth(getNumRows() * getRectangleWidth());
         
         //Update our root variable
         root = anchorPane;
@@ -86,13 +95,18 @@ public class CheckerBoard {
     /**
      * Sets the dimensions of the rectangles
      */
-    public void setDimensions() {
-        if(getHeight() >= getWidth()) {
-            rectangleWidth = getWidth() / ((double) getNumRows());
-            rectangleHeight = getWidth() / ((double) getNumCols());
+    public void setDimensions(boolean forceSquare) {
+        if(forceSquare) {
+            if(getHeight() >= getWidth()) {
+                rectangleWidth = getWidth() / ((double) getNumRows());
+                rectangleHeight = getWidth() / ((double) getNumCols());
+            } else {
+                rectangleWidth = getHeight() / ((double) getNumRows());
+                rectangleHeight = getHeight() / ((double) getNumCols());
+            }
         } else {
-            rectangleWidth = getHeight() / ((double) getNumRows());
-            rectangleHeight = getHeight() / ((double) getNumCols());
+            rectangleWidth = getWidth() / getNumRows();
+            rectangleHeight = getHeight() / getNumCols();
         }
     }
     
